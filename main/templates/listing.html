@@ -1,0 +1,135 @@
+{% include 'base_nav.html' %}
+
+
+{% block content %}
+<style>
+  /* Container for the list items */
+  .item-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Style for each individual item */
+  .item-list-container div {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    width: 100%;
+    max-width: 500px; /* Limit width for better readability */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Style for the item text */
+  .item-list-container div span {
+    flex-grow: 1; /* Allow text to take up available space */
+    margin-right: 20px;
+    font-size: 1.1em;
+    color: #333;
+  }
+
+  /* Style for the action links (EDIT, DELETE) */
+  .item-list-container div a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .item-list-container div a:first-of-type { /* Style for EDIT link */
+    background-color: #007bff;
+    color: white;
+  }
+
+  .item-list-container div a:first-of-type:hover {
+    background-color: #0056b3;
+  }
+
+  .item-list-container div a:last-of-type { /* Style for DELETE link */
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .item-list-container div a:last-of-type:hover {
+    background-color: #c82333;
+  }
+
+  /* Style for the "Add More" and "Next" links */
+  .action-links-container {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px; /* Align with item list width */
+  }
+
+  .action-links-container a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .action-links-container a:first-of-type { /* Style for ADD MORE link */
+    background-color: #28a745;
+    color: white;
+  }
+
+  .action-links-container a:first-of-type:hover {
+    background-color: #218838;
+  }
+
+  .action-links-container a:last-of-type { /* Style for NEXT link */
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .action-links-container a:last-of-type:hover {
+    background-color: #5a6268;
+  }
+</style>
+
+
+
+{% if qs %}
+    
+
+<div class="item-list-container">
+    {% for q in qs %}
+    <div>
+      <span>{{ q }}</span>
+      
+      {% if not skills %}
+      <a href="/{{editurl}}/{{q.id}}">EDIT</a>
+        
+      {% endif %}
+        
+      <a href="/{{delete_url}}/{{q.id}}" style="color: white; background-color: #dc3545;">DELETE</a>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+<center><h2>No Items to list</h2></center>
+{% endif %}
+<center>
+    <div class="action-links-container">
+        <a href="{{ previous_url }}">PREVIOUS</a>
+        <a href="{{ addmorelink }}">ADD MORE</a>
+        <a href="{{ nexturl }}">NEXT</a>
+    </div>
+</center>
+
+{% endblock content %}
+    
+

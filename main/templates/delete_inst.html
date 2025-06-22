@@ -1,0 +1,12 @@
+<!-- yourmodel_confirm_delete.html -->
+ {% include 'base_header.html' %}
+ <center>
+<h2>Are you sure you want to delete "{{ object }}"?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+    <a href="{% url 'home' %}">Cancel</a> <!-- Optional cancel button -->
+</form>
+
+</center>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Editor</title>
+
+</head>
+
+<body>
+    {% include 'base_header.html' %}
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            /* padding-top: 100px; Demo spacing */
+        }
+
+        .navbar {
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 1rem;
+            padding-top: 1.5rem;
+        }
+
+        .nav-steps {
+            display: flex;
+            gap: 0;
+            padding: 1rem 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .nav-steps::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+            margin-right: 0.5rem;
+        }
+
+        .nav-step:hover {
+            background: #f5f5f5;
+            color: #000;
+        }
+
+        .nav-step.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .nav-step.active:hover {
+            background: #333;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .nav-step:not(.active) .step-number {
+            background: #e5e5e5;
+            color: #666;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: #e5e5e5;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #000;
+            width: 60%; /* Adjust based on current step */
+            transition: width 0.3s ease;
+        }
+
+        /* Demo content */
+        .demo-content {
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-brand {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .nav-step {
+                padding: 0.625rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .step-number {
+                width: 20px;
+                height: 20px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+
+
+    <nav class="navbar">
+    
+            <div class="nav-steps">
+                <a href="{% url 'educationform' resume_id=resume_id %}" class="nav-step 
+                {% if education %}
+                    active
+                {% endif %}
+                ">
+                    <span class="step-number">3</span>
+                    Education
+                </a>
+                <a href="{% url 'experienceform' resume_id=resume_id %}" class="nav-step
+                {% if experience %}
+                    active
+                {% endif %}
+                
+                ">
+                    <span class="step-number">4</span>
+                    Experience
+                </a>
+                <a href="{% url 'projectsform' resume_id=resume_id %}" class="nav-step
+                {% if projects %}
+                    active
+                {% endif %}
+                ">
+                    <span class="step-number">5</span>
+                    Projects
+                </a>
+
+
+                <a href="{% url 'skillsform' resume_id=resume_id %}" class="nav-step
+                {% if Skills %}
+                    active
+                {% endif %}
+                ">
+                    <span class="step-number">6</span>
+                    Skills
+                </a>
+                <a href="{% url 'achievecertiform' resume_id=resume_id %}" class="nav-step
+                {% if achievecerti %}
+                    active
+                {% endif %}
+                ">
+                    <span class="step-number">7</span>
+                    Achievements
+                </a>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </nav>
+
+    
+    {% block content %}
+        
+    {% endblock content %}
+        
+<script>
+    // Get all elements with class "nav-step active"
+    const steps = Array.from(document.getElementsByClassName('nav-step active'));
+
+    // Get the progress fill element
+    const progressFill = document.querySelector('.progress-fill');
+
+    // Just in case you want to see which ones are active
+    console.log(steps);
+
+    // If there's at least one active step, calculate progress
+    if (steps.length > 0) {
+        // Get total number of steps
+        const totalSteps = document.querySelectorAll('.nav-step').length;
+
+        // Get the index of the active step (we’ll use the last one if multiple)
+        const activeStep = steps[steps.length - 1];
+
+        const allSteps = Array.from(document.querySelectorAll('.nav-step'));
+        const index = allSteps.indexOf(activeStep); // 0-based index
+
+        const progress = ((index + 1) / totalSteps) * 100;
+        progressFill.style.width = progress + '%';
+    }
+</script>
+</body>
+</html>
