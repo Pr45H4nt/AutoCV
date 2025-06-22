@@ -47,7 +47,7 @@ urlpatterns = [
     path('<int:resume_id>/modern-v2/', ModernV2.as_view(), name='modern_v2' ),
     path('<int:resume_id>/modern-v3/', ModernV3.as_view(), name='modern_v3' ),
 
-    path('<int:resume_id>/download//<int:style_id>/', ResumeDownloadView.as_view(), name='resume_download')
+    path('<int:resume_id>/download/<int:style_id>/', ResumeDownloadView.as_view(), name='resume_download')
 
 
 ]
