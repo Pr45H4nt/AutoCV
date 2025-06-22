@@ -2,7 +2,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from .forms import ResumeForm,PersonalInfoForm, EducationForm, ExperienceForm, Achievecertiform, Projectsform
 from .models import Education, Resume , Experience, SkillCategory, PersonalInfo, AchievementsCertifications, Projects
 from django.urls import reverse_lazy, reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 
@@ -70,15 +70,23 @@ class PersonalInfoEdit(UpdateView):
     model = PersonalInfo
     form_class = PersonalInfoForm
     template_name = 'updateform.html'
-    pk_url_kwarg = 'resume_id'
     success_url = 'educationform'
+    pk_url_kwarg = 'resume_id'
     name = 'Personal Info'
     previous_url = 'editresumetitle'
     next_url = 'listeducation'
 
-    def get_queryset(self):
-        resume = get_object_or_404(Resume, id=self.kwargs.get('resume_id'))
-        return self.model.objects.filter(resume__user=self.request.user)
+    def get(self, request, *args, **kwargs):
+        resume_id = self.kwargs.get('resume_id')
+        personal_info_exists = PersonalInfo.objects.filter(resume__id=resume_id, resume__user=request.user).exists()  
+        if not personal_info_exists:
+              return redirect('personalinfoform', resume_id=resume_id)
+
+        return super().get(request, *args, **kwargs)
+        
+    
+    def get_object(self, queryset = None):
+        return get_object_or_404(PersonalInfo, resume__id=self.kwargs.get('resume_id'), resume__user=self.request.user)
 
 
     def get_context_data(self, **kwargs):
@@ -208,8 +216,7 @@ class ListResumeView(ListView):
 
     def get_queryset(self):
         qs= super().get_queryset()
-        qs.filter(user = self.request.user)
-        return qs
+        return qs.filter(user = self.request.user)
     
 
 
@@ -275,6 +282,4 @@ class ResumeDeleteView(DeleteView):
         return reverse_lazy('listresume')
     
     
-
-
 
