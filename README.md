@@ -128,6 +128,4 @@ Contributions are welcome! If you have suggestions for improvements or new featu
 
 5. Open a Pull Request.
 
-## 📄 License
 
-This project is licensed under the [Your Chosen License] - see the `LICENSE` file for details
